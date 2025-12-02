@@ -17,7 +17,7 @@ char* read_rotation(FILE* file)
     ssize_t line_length;  
     line_length = getline(&lineptr, &buffer_size, file);
 
-    if (line_length == NULL) {
+    if (line_length <= 0) {
         return NULL;
     }
 
@@ -27,10 +27,11 @@ char* read_rotation(FILE* file)
     return lineptr;
 }
 
-int process_rotation(char* rotation_string)
+int convert_rotation(char* str)
 {
-    int negative = ( rotation_string[0] == 'L' );
-    double value = strtod(rotation_string[1], NULL);
+    int negative = ( str[0] == 'L' );
+    memmove(str, str + 1, strlen(str));
+    double value = strtod(str, NULL);
     if (negative) {
         return ( ((int) value) * -1 );
     } else {
@@ -53,21 +54,21 @@ int main(int argc, char** argv)
         rotations_array[i] = read_rotation(fstream);
     }
 
-    int dial = 0;
+    int dial = 50;
     int count = 0;
 
     for (int i = 0; i < FILE_LENGTH; i++) {
-        int value = read_rotation(rotations_array[i]);
+        int value = convert_rotation(rotations_array[i]);
         dial += value;
-        if (dial > 99) {
+        if (dial > 99 || dial < 0) {
             dial = dial % 100;
-        }
+        } 
 
         if (dial == 0) {
             count++;
         }
     }
 
-    printf("%d", count);
+    printf("\nTimes the dial pointed at 0: %d\n", count);
     return 0;
 }
