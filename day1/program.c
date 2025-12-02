@@ -1,5 +1,8 @@
-// Every time the dial points at 0, increment a count by 1
-// Return final count
+/* 
+ * alex loomis
+ * advent of code 2025
+ * day 1
+ */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -65,4 +68,6 @@ int main(int argc, char** argv)
         }
     }
 
+    printf("%d", count);
+    return 0;
 }
